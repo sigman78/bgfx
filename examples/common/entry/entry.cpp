@@ -432,8 +432,6 @@ BX_PRAGMA_DIAGNOSTIC_POP();
 
 		WindowHandle handle = { UINT16_MAX };
 
-		bool mouseLock = inputIsMouseLocked();
-
 		const Event* ev;
 		do
 		{
@@ -482,8 +480,7 @@ BX_PRAGMA_DIAGNOSTIC_POP();
 							inputSetMouseButtonState(mouse->m_button, mouse->m_down);
 						}
 
-						if (NULL != _mouse
-						&&  !mouseLock)
+						if (NULL != _mouse)
 						{
 							if (mouse->m_move)
 							{

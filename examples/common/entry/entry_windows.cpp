@@ -936,24 +936,31 @@ namespace entry
 			SetCursorPos(pt.x, pt.y);
 		}
 
+		void getMousePos(HWND _hwnd, int32_t& _mx, int32_t& _my)
+		{
+			POINT pt;
+			GetCursorPos(&pt);
+			ScreenToClient(_hwnd, &pt);
+			_mx = pt.x;
+			_my = pt.y;
+		}
+
 		void setMouseLock(HWND _hwnd, bool _lock)
 		{
-			if (_hwnd != m_mouseLock)
+			if (_lock)
 			{
-				if (_lock)
-				{
-					m_mx = m_width/2;
-					m_my = m_height/2;
-					ShowCursor(false);
-					setMousePos(_hwnd, m_mx, m_my);
-				}
-				else
-				{
-					setMousePos(_hwnd, m_mx, m_my);
-					ShowCursor(true);
-				}
-
+				getMousePos(_hwnd, m_mpx, m_mpy);
+				m_mx = m_width / 2;
+				m_my = m_height / 2;
+				ShowCursor(false);
+				setMousePos(_hwnd, m_mx, m_my);
 				m_mouseLock = _hwnd;
+			}
+			else
+			{
+				setMousePos(_hwnd, m_mpx, m_mpy);
+				ShowCursor(true);
+				m_mouseLock = NULL;
 			}
 		}
 
@@ -979,6 +986,9 @@ namespace entry
 		int32_t m_mx;
 		int32_t m_my;
 		int32_t m_mz;
+
+		int32_t m_mpx;
+		int32_t m_mpy;
 
 		bool m_frame;
 		HWND m_mouseLock;
